@@ -1,0 +1,3 @@
+@echo off
+echo Viindoo Sign Client is running...
+.venv\Scripts\python.exe main.py
