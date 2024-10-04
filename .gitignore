@@ -1,3 +1,6 @@
+# project data_dir
+data_dir
+
 /.project
 /.pydevproject
 *.pyc
@@ -56,6 +59,7 @@ install/win32/meta.py
 /man/
 /share/
 /src/
+/.venv
 
 # OS generated files #
 ######################
