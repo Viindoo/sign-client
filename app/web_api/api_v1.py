@@ -15,7 +15,7 @@ from PIL import Image
 from pyhanko import stamp
 from pyhanko.pdf_utils import images
 
-from pyhanko.sign import signers
+from pyhanko.sign import signers, timestamps
 from pyhanko.sign.general import SigningError
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
 from pyhanko.sign.fields import SigFieldSpec
@@ -113,6 +113,9 @@ class WebsocketHandlerV1(WebsocketHandler):
                 )
             border_width = 0.5 if data.get('has_border') else 0
 
+            timestamper = None
+            if data.get('timestamp_server'):
+                timestamper = timestamps.HTTPTimeStamper(data['timestamp_server'])
             pdf_signer = signers.PdfSigner(
                 signature_meta=signers.PdfSignatureMetadata(
                     field_name=signature_field_name
@@ -128,7 +131,8 @@ class WebsocketHandlerV1(WebsocketHandler):
                     background_opacity=1,
                     border_width=border_width
                 ),
-                signer=singer
+                signer=singer,
+                timestamper=timestamper
             )
             try:
                 output = await pdf_signer.async_sign_pdf(writer)
