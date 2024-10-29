@@ -84,11 +84,11 @@ class WebsocketHandlerV1(WebsocketHandler):
 
     async def _sign(self, data, singer: signers.Signer):
         file_url = data['file_url']
-        if file_url.starts_with('blob:'):
-            file_url.removeprefix('blob:')
-        response = requests.get(data['file_url'], verify=False, stream=True)
+        if file_url.startswith('blob:'):
+            file_url = file_url.removeprefix('blob:')
+        response = requests.get(file_url, verify=False, stream=True)
         if response.status_code != 200:
-            await self.manager.send_error(f'download {data["file_url"]} error', self.websocket)
+            await self.manager.send_error(f'download {file_url} error', self.websocket)
             return
 
         signature_field_name = data['signature_field_name'] or f'Signature_{random_str(12)}'
