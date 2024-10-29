@@ -83,6 +83,9 @@ class WebsocketHandlerV1(WebsocketHandler):
                 await self._try_sign(data, signer, current_call=current_call+1)
 
     async def _sign(self, data, singer: signers.Signer):
+        file_url = data['file_url']
+        if file_url.starts_with('blob:'):
+            file_url.removeprefix('blob:')
         response = requests.get(data['file_url'], verify=False, stream=True)
         if response.status_code != 200:
             await self.manager.send_error(f'download {data["file_url"]} error', self.websocket)
