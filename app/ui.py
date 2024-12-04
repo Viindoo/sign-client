@@ -9,7 +9,7 @@ from app import update
 from app.web_api import server_service
 
 root = tk.Tk()
-updater = update.Updater()
+updater = update.Updater({'update_url': 'https://api.github.com/repos/Viindoo/sign-client/releases/latest'})
 _logger = logging.getLogger(__name__)
 
 
