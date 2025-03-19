@@ -11,7 +11,7 @@ How to install?
 
 - Open *Microsoft Store*, search `python3.10` and install it, ignore if you have been installed.
 - Download `Viindoo Sign Client` and unzip or clone code, go to `install_script` and open `windows.bat` file.
-- After that, open `bin.bat` to run. You can create a shortcut on the desktop to run it conveniently whenever needed.
+- After installation, you can run the application from Desktop or Start Menu by clicking on "Viindoo Sign Client" shortcut.
 
 **Linux Debian (Ubuntu, ..)**
 
