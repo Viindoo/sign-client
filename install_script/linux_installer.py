@@ -21,7 +21,11 @@ def create_desktop_app():
     script = utils.get_abs_path('../main.py')
     exec_cmd = f'{utils.python_venv_exec_path} {script}'
 
-    icon_path = utils.get_abs_path('icon.png')
+    icon_path = utils.get_abs_path('../app/assets/icon.ico')
+    if not os.path.exists(icon_path):
+        print('Warning: Icon file not found at app/assets/icon.ico')
+        icon_path = ''
+
     desktop_content = f"""[Desktop Entry]
 Version=1.0
 Name=Viindoo Sign Client
@@ -31,8 +35,10 @@ Terminal=false
 Type=Application
 Categories=Utility;
 """
-    with open('/usr/share/applications/viin_sign.desktop', 'w') as file:
+    desktop_file = '/usr/share/applications/viin_sign.desktop'
+    with open(desktop_file, 'w') as file:
         file.write(desktop_content)
+    os.chmod(desktop_file, 0o644)
 
 def make_datadir():
     if os.path.exists(utils.data_dir_path):
