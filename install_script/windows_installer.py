@@ -11,6 +11,7 @@ def create_python_venv():
         print('python venv already exists, ignore.')
         return
     os.system(f"python3.10 -m venv {utils.python_venv_path}")
+    os.system(f"{utils.python_venv_exec_path} -m pip install --upgrade pip setuptools")
     os.system(f"{utils.python_venv_exec_path} -m pip install -r {utils.requirements_path}")
 
 
