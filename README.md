@@ -16,7 +16,7 @@
 
 ## 📋 Overview
 
-**Viindoo Sign Client** is a desktop application that enables digital document signing directly from your local machine. It integrates seamlessly with the `viin_sign` module in Odoo, allowing you to sign PDF documents using:
+**Viindoo Sign Client** is a desktop application that enables digital document signing directly from your local machine. It integrates seamlessly with the [`viin_sign`](https://viindoo.com/vi/apps/app/17.0/viin_sign) module in Odoo, allowing you to sign PDF documents using:
 
 - 🔐 **USB Token/Smart Card** (PKCS#11)
 - 🖥️ **Windows Certificate Store**
