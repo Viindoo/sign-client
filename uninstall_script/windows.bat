@@ -34,32 +34,22 @@ if exist "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Viindoo Sign Client.ln
     echo Start menu shortcut not found
 )
 
-REM Remove application data directory (optional)
-set /p remove_data="Remove application data directory? (y/N): "
-if /i "%remove_data%"=="y" (
-    if exist "%USERPROFILE%\.viin_sign_client_data" (
-        echo Removing application data directory...
-        rmdir /s /q "%USERPROFILE%\.viin_sign_client_data"
-        echo ✓ Application data directory removed
-    ) else (
-        echo Application data directory not found
-    )
+REM Remove application data directory
+if exist "%USERPROFILE%\.viin_sign_client_data" (
+    echo Removing application data directory...
+    rmdir /s /q "%USERPROFILE%\.viin_sign_client_data"
+    echo ✓ Application data directory removed
 ) else (
-    echo Application data directory kept
+    echo Application data directory not found
 )
 
-REM Remove Python virtual environment (optional)
-set /p remove_venv="Remove Python virtual environment? (y/N): "
-if /i "%remove_venv%"=="y" (
-    if exist "%~dp0..\.venv" (
-        echo Removing Python virtual environment...
-        rmdir /s /q "%~dp0..\.venv"
-        echo ✓ Python virtual environment removed
-    ) else (
-        echo Python virtual environment not found
-    )
+REM Remove Python virtual environment
+if exist "%~dp0..\.venv" (
+    echo Removing Python virtual environment...
+    rmdir /s /q "%~dp0..\.venv"
+    echo ✓ Python virtual environment removed
 ) else (
-    echo Python virtual environment kept
+    echo Python virtual environment not found
 )
 
 REM Remove Windows Registry entries (if any)
@@ -79,8 +69,8 @@ echo.
 echo The following items have been removed:
 echo - Desktop shortcut
 echo - Start menu shortcut
-echo - Application data directory (if selected)
-echo - Python virtual environment (if selected)
+echo - Application data directory
+echo - Python virtual environment
 echo - Registry entries (if any)
 echo.
 echo Note: Python 3.10 and Microsoft Visual C++ are kept installed as they might be used by other applications.

@@ -47,32 +47,22 @@ else
     echo "Command line symlink not found"
 fi
 
-# Remove application data directory (optional)
+# Remove application data directory
 DATA_DIR="$HOME/.viin_sign_client_data"
 if [[ -d "$DATA_DIR" ]]; then
-    read -p "Remove application data directory ($DATA_DIR)? (y/N): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        rm -rf "$DATA_DIR"
-        echo "✓ Application data directory removed"
-    else
-        echo "Application data directory kept"
-    fi
+    echo "Removing application data directory..."
+    rm -rf "$DATA_DIR"
+    echo "✓ Application data directory removed"
 else
     echo "Application data directory not found"
 fi
 
-# Remove Python virtual environment (optional)
+# Remove Python virtual environment
 VENV_DIR="$(dirname "$0")/../.venv"
 if [[ -d "$VENV_DIR" ]]; then
-    read -p "Remove Python virtual environment ($VENV_DIR)? (y/N): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        rm -rf "$VENV_DIR"
-        echo "✓ Python virtual environment removed"
-    else
-        echo "Python virtual environment kept"
-    fi
+    echo "Removing Python virtual environment..."
+    rm -rf "$VENV_DIR"
+    echo "✓ Python virtual environment removed"
 else
     echo "Python virtual environment not found"
 fi
