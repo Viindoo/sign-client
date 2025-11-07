@@ -2,6 +2,7 @@ import os
 import stat
 import sys
 import platform
+import subprocess
 
 # Add parent directory to path to import app.utils
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -15,13 +16,34 @@ def create_python_venv():
         return
     
     print('Creating Python virtual environment...')
-    os.system(f"python3.10 -m venv {utils.python_venv_path}")
+    python_exe = sys.executable
+    # Use subprocess to handle paths with spaces correctly
+    result = subprocess.run(
+        [python_exe, '-m', 'venv', utils.python_venv_path],
+        check=False
+    )
+    if result.returncode != 0:
+        raise Exception(f"Failed to create virtual environment. Exit code: {result.returncode}")
+    
+    # Verify venv was created successfully
+    if not os.path.exists(utils.python_venv_exec_path):
+        raise Exception(f"Virtual environment created but python executable not found at: {utils.python_venv_exec_path}")
     
     print('Upgrading pip and setuptools...')
-    os.system(f"{utils.python_venv_exec_path} -m pip install --upgrade pip setuptools")
+    result = subprocess.run(
+        [utils.python_venv_exec_path, '-m', 'pip', 'install', '--upgrade', 'pip', 'setuptools'],
+        check=False
+    )
+    if result.returncode != 0:
+        raise Exception(f"Failed to upgrade pip and setuptools. Exit code: {result.returncode}")
     
     print('Installing Python dependencies...')
-    os.system(f"{utils.python_venv_exec_path} -m pip install -r {utils.requirements_path}")
+    result = subprocess.run(
+        [utils.python_venv_exec_path, '-m', 'pip', 'install', '-r', utils.requirements_path],
+        check=False
+    )
+    if result.returncode != 0:
+        raise Exception(f"Failed to install dependencies. Exit code: {result.returncode}")
     
     print('✅ Python virtual environment created successfully!')
 

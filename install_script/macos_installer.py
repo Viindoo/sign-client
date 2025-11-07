@@ -21,7 +21,8 @@ def create_python_venv():
         return
     
     print('Creating Python virtual environment...')
-    os.system(f"python3.10 -m venv '{utils.python_venv_path}'")
+    python_exe = sys.executable
+    os.system(f"{python_exe} -m venv '{utils.python_venv_path}'")
     
     print('Upgrading pip and setuptools...')
     os.system(f"{utils.python_venv_exec_path} -m pip install --upgrade pip setuptools")

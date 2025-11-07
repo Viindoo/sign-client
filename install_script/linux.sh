@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Viindoo Sign Client - Linux Installation Script
-# This script automatically installs Python 3.10 and dependencies for Linux
+# This script automatically installs Python 3.10+ (3.10, 3.11, 3.12, 3.13) and dependencies for Linux
 
 set -e  # Exit on any error
 
@@ -12,13 +12,25 @@ echo ""
 # Check if running on supported Linux distribution
 if ! command -v apt &> /dev/null; then
     echo "❌ Error: This script is designed for Ubuntu/Debian systems."
-    echo "   For other distributions, please install Python 3.10 manually."
+    echo "   For other distributions, please install Python 3.10+ manually."
     exit 1
 fi
 
-# Check if Python 3.10 is installed
-if ! command -v python3.10 &>/dev/null; then
-    echo "Installing Python 3.10..."
+# Detect Python version (try 3.13, 3.12, 3.11, 3.10)
+PYTHON_VERSION=""
+PYTHON_EXE=""
+
+for version in 3.13 3.12 3.11 3.10; do
+    if command -v python${version} &>/dev/null; then
+        PYTHON_VERSION=${version}
+        PYTHON_EXE=python${version}
+        break
+    fi
+done
+
+# If no Python found, install the latest available (prefer 3.13, then 3.12, then 3.11, fallback to 3.10)
+if [ -z "$PYTHON_EXE" ]; then
+    echo "No Python 3.10+ found. Installing Python 3.13..."
     echo "  - Updating package list..."
     sudo apt update
     
@@ -31,31 +43,50 @@ if ! command -v python3.10 &>/dev/null; then
     echo "  - Updating package list again..."
     sudo apt update
     
-    echo "  - Installing Python 3.10..."
-    sudo apt install python3.10 -y
+    # Search for available Python versions and install the newest one
+    echo "  - Searching for available Python versions..."
+    PYTHON_TO_INSTALL=""
+    for version in 3.13 3.12 3.11 3.10; do
+        # Check if package exists and has a candidate version (not "none")
+        policy_output=$(apt-cache policy python${version} 2>/dev/null)
+        if echo "$policy_output" | grep -q "Candidate:" && ! echo "$policy_output" | grep -q "Candidate: (none)"; then
+            PYTHON_TO_INSTALL=${version}
+            echo "  - Found Python ${version} in repository"
+            break
+        fi
+    done
     
-    echo "✅ Python 3.10 installed successfully!"
+    if [ -z "$PYTHON_TO_INSTALL" ]; then
+        echo "❌ No Python 3.10+ found in repository. Please install Python 3.10+ manually."
+        exit 1
+    fi
+    
+    echo "  - Installing Python ${PYTHON_TO_INSTALL}..."
+    sudo apt install python${PYTHON_TO_INSTALL} -y
+    PYTHON_VERSION=${PYTHON_TO_INSTALL}
+    PYTHON_EXE=python${PYTHON_TO_INSTALL}
+    echo "✅ Python ${PYTHON_TO_INSTALL} installed successfully!"
 else
-    echo "✅ Python 3.10 is already installed."
+    echo "✅ Python ${PYTHON_VERSION} is already installed."
 fi
 
-# Check if python3.10-venv is installed
-if ! dpkg -s python3.10-venv &>/dev/null; then
-    echo "Installing Python 3.10 virtual environment support..."
-    sudo apt install python3.10-venv -y
-    echo "✅ Python 3.10 venv installed successfully!"
+# Check if python-venv is installed
+if ! dpkg -s python${PYTHON_VERSION}-venv &>/dev/null; then
+    echo "Installing Python ${PYTHON_VERSION} virtual environment support..."
+    sudo apt install python${PYTHON_VERSION}-venv -y
+    echo "✅ Python ${PYTHON_VERSION} venv installed successfully!"
 else
-    echo "✅ Python 3.10 venv is already installed."
+    echo "✅ Python ${PYTHON_VERSION} venv is already installed."
 fi
 
-# Install python3.10-tk for GUI support
-echo "Installing python3.10-tk (tkinter) for GUI support..."
-sudo apt-get install python3.10-tk -y
-echo "✅ python3.10-tk installed successfully!"
+# Install python-tk for GUI support
+echo "Installing python${PYTHON_VERSION}-tk (tkinter) for GUI support..."
+sudo apt-get install python${PYTHON_VERSION}-tk -y
+echo "✅ python${PYTHON_VERSION}-tk installed successfully!"
 
 echo ""
 echo "Running Python installer to setup application..."
-sudo python3 linux_installer.py
+sudo $PYTHON_EXE linux_installer.py
 
 if [ $? -eq 0 ]; then
     echo ""
@@ -64,7 +95,7 @@ if [ $? -eq 0 ]; then
     echo "You can now run Viindoo Sign Client:"
     echo "  - From Applications menu (Ubuntu)"
     echo "  - Command line: ./bin.sh"
-    echo "  - Direct: python3.10 main.py"
+    echo "  - Direct: ${PYTHON_EXE} main.py"
     echo ""
 else
     echo ""

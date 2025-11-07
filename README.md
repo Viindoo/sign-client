@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Viindoo Sign Client](https://img.shields.io/badge/Version-0.1.0-blue.svg)
-![Python](https://img.shields.io/badge/Python-3.10-green.svg)
+![Python](https://img.shields.io/badge/Python-3.10%2B-green.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)
 
 **Digital Signing Application for Viindoo/Odoo Integration**
@@ -37,7 +37,7 @@
 
 ### Prerequisites
 
-- **Python 3.10** (automatically installed by our scripts)
+- **Python 3.10 or newer** (3.10, 3.11, 3.12, 3.13 - automatically detected by our scripts)
 - **Internet connection** for initial setup
 - **USB Token/Smart Card** (for hardware-based signing)
 
@@ -48,7 +48,21 @@ Choose your operating system:
 <details>
 <summary><strong>🪟 Windows</strong></summary>
 
-#### Automatic Installation (Recommended)
+#### Prerequisites
+
+Before installing Viindoo Sign Client, you must install:
+
+1. **Python 3.10 or newer** (3.10, 3.11, 3.12, 3.13) - Choose one method:
+   - **Method 1 (Recommended)**: Install from [Microsoft Store](https://apps.microsoft.com/store/detail/python-311/9NRWMJP3717K) - Search for "Python 3"
+   - **Method 2**: Download from [python.org](https://www.python.org/downloads/)
+
+     **IMPORTANT**: During installation, check "Add python.exe to PATH"
+
+2. **Microsoft Visual C++ 14** - Download from [Microsoft](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
+
+**Note**: The installer will automatically detect and use the highest available Python version (3.13 → 3.12 → 3.11 → 3.10).
+
+#### Installation
 
 1. **Download** the latest release from [GitHub](https://github.com/Viindoo/sign-client/releases)
 2. **Extract** the ZIP file to your desired location
@@ -56,17 +70,10 @@ Choose your operating system:
 4. **Run** `windows.bat`
 5. **Follow** the on-screen instructions
 
-#### Manual Installation
-
-1. Install **Python 3.10** from [Microsoft Store](https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5)
-2. Install **Microsoft Visual C++ 14** from [Microsoft](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)
-3. Run `python3.10 windows_installer.py` in the `install_script` folder
-
 #### After Installation
 
 - **Desktop Shortcut**: Click the "Viindoo Sign Client" icon
 - **Start Menu**: Search for "Viindoo Sign Client"
-- **Command Line**: `python3.10 main.py`
 
 </details>
 
@@ -83,20 +90,20 @@ Choose your operating system:
 
 #### Manual Installation
 
-1. Install Python 3.10 and dependencies:
+1. Install Python 3.10+ and dependencies:
    ```bash
    sudo apt update
    sudo apt install software-properties-common
    sudo add-apt-repository ppa:deadsnakes/ppa
    sudo apt update
    sudo apt install python3.10 python3.10-venv python3.10-tk
+   # Replace 3.10 by your python version
    ```
-2. Run `python3.10 linux_installer.py` in the `install_script` folder
+2. Run `python3.10 linux_installer.py` (replace 3.10 by your Python version) in the `install_script` folder
 
 #### After Installation
 
 - **Applications Menu**: Search for "Viindoo Sign Client"
-- **Command Line**: `./bin.sh` or `python3.10 main.py`
 
 </details>
 
@@ -114,16 +121,16 @@ Choose your operating system:
 #### Manual Installation
 
 1. Install [Homebrew](https://brew.sh/) if not already installed
-2. Install Python 3.10 and dependencies:
+2. Install Python 3.10+ and dependencies:
    ```bash
    brew install python@3.10 python-tk@3.10 pkg-config
+   # Replace 3.10 by your python version
    ```
-3. Run `python3.10 macos_installer.py` in the `install_script` folder
+3. Run `python3.10 macos_installer.py` (replace 3.10 by your Python version) in the `install_script` folder
 
 #### After Installation
 
 - **Applications Folder**: "Viindoo Sign Client.app"
-- **Command Line**: `./bin.sh` or `viin-sign-client`
 
 </details>
 

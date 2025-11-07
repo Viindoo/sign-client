@@ -19,7 +19,8 @@ def create_python_venv():
         return
     
     print('Creating Python virtual environment...')
-    os.system(f"python3.10 -m venv '{utils.python_venv_path}'")
+    python_exe = sys.executable
+    os.system(f"{python_exe} -m venv '{utils.python_venv_path}'")
     
     print('Upgrading pip and setuptools...')
     os.system(f"{utils.python_venv_exec_path} -m pip install --upgrade pip setuptools")
@@ -102,7 +103,7 @@ def main():
         if is_ubuntu():
             print("- From Applications menu (Ubuntu)")
         print("- Command line: ./bin.sh")
-        print("- Direct: python3.10 main.py")
+        print(f"- Direct: {sys.executable} main.py")
         print()
         
     except Exception as e:
