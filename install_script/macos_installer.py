@@ -2,7 +2,6 @@ import os
 import platform
 import stat
 import sys
-import subprocess
 import shutil
 
 # Add parent directory to path to import app.utils
