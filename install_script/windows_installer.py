@@ -2,11 +2,17 @@ import os
 import stat
 import sys
 import platform
+import subprocess
 
 # Add parent directory to path to import app.utils
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app import utils
+
+def check_python_version():
+    """Check if Python version is exactly 3.10"""
+    if sys.version_info.major != 3 or sys.version_info.minor != 10:
+        raise Exception(f"Python 3.10 is required, but found {sys.version_info.major}.{sys.version_info.minor}")
 
 def create_python_venv():
     """Create Python virtual environment and install dependencies"""
@@ -14,20 +20,53 @@ def create_python_venv():
         print('✅ Python virtual environment already exists, skipping...')
         return
     
+    python_cmd = sys.executable
+    print(f'Using Python command: {python_cmd}')
+    
+    # Normalize paths to handle spaces correctly
+    python_venv_path = os.path.normpath(utils.python_venv_path)
+    python_venv_exec_path = os.path.normpath(utils.python_venv_exec_path)
+    requirements_path = os.path.normpath(utils.requirements_path)
+    
     print('Creating Python virtual environment...')
-    os.system(f"python3.10 -m venv {utils.python_venv_path}")
+    # Use subprocess.run() instead of os.system() to handle paths with spaces correctly
+    result = subprocess.run(
+        [python_cmd, '-m', 'venv', python_venv_path],
+        check=False,
+        capture_output=True,
+        text=True
+    )
+    if result.returncode != 0:
+        error_msg = result.stderr.strip() if result.stderr else result.stdout.strip()
+        raise Exception(f"Failed to create virtual environment. Exit code: {result.returncode}\nError: {error_msg}")
+    
+    # Verify venv was created successfully
+    if not os.path.exists(python_venv_exec_path):
+        raise Exception(f"Virtual environment created but python executable not found at: {python_venv_exec_path}")
     
     print('Upgrading pip and setuptools...')
-    os.system(f"{utils.python_venv_exec_path} -m pip install --upgrade pip setuptools")
+    result = subprocess.run(
+        [python_venv_exec_path, '-m', 'pip', 'install', '--upgrade', 'pip', 'setuptools'],
+        check=False,
+        capture_output=True,
+        text=True
+    )
+    if result.returncode != 0:
+        error_msg = result.stderr.strip() if result.stderr else result.stdout.strip()
+        raise Exception(f"Failed to upgrade pip and setuptools. Exit code: {result.returncode}\nError: {error_msg}")
     
     print('Installing Python dependencies...')
-    os.system(f"{utils.python_venv_exec_path} -m pip install -r {utils.requirements_path}")
+    result = subprocess.run(
+        [python_venv_exec_path, '-m', 'pip', 'install', '-r', requirements_path],
+        check=False,
+        capture_output=True,
+        text=True
+    )
+    if result.returncode != 0:
+        error_msg = result.stderr.strip() if result.stderr else result.stdout.strip()
+        raise Exception(f"Failed to install dependencies. Exit code: {result.returncode}\nError: {error_msg}")
     
     print('✅ Python virtual environment created successfully!')
-
-def create_desktop_app():
-    """Desktop app creation is handled by PowerShell script"""
-    print('Desktop shortcuts will be created by PowerShell script...')
 
 def make_datadir():
     """Create data directory and log file"""
@@ -51,14 +90,12 @@ def main():
     print("=== Viindoo Sign Client - Windows Python Installer ===")
     print(f"Running on: {platform.system()} {platform.release()}")
     print()
-    
+
+    check_python_version()
+
     try:
         # Create Python virtual environment
         create_python_venv()
-        print()
-        
-        # Create desktop app (handled by PowerShell)
-        create_desktop_app()
         print()
         
         # Create data directory

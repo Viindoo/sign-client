@@ -48,19 +48,26 @@ Choose your operating system:
 <details>
 <summary><strong>🪟 Windows</strong></summary>
 
-#### Automatic Installation (Recommended)
+#### Installation Steps
 
-1. **Download** the latest release from [GitHub](https://github.com/Viindoo/sign-client/releases)
-2. **Extract** the ZIP file to your desired location
-3. **Navigate** to the `install_script` folder
-4. **Run** `windows.bat`
-5. **Follow** the on-screen instructions
+1. **Install Python 3.10** from [python.org](https://www.python.org/downloads/release/python-31011/)
+   - Download the Windows installer (64-bit)
+   - **IMPORTANT**: During installation, check **"Add Python to PATH"**
+   - After installation, restart your terminal/command prompt
 
-#### Manual Installation
+2. **Install Microsoft C++ Build Tools** from [Visual Studio Downloads](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+   - Download **"Build Tools"**
+   - During installation, select:
+     - **Desktop development with C++** (workload)
+     - **MSVC v143 - VS 2022 C++ x64/x86 build tools** (component)
+     - **Windows 11 SDK** (latest version)
 
-1. Install **Python 3.10** from [Microsoft Store](https://apps.microsoft.com/store/detail/python-310/9PJPW5LDXLZ5)
-2. Install **Microsoft Visual C++ 14** from [Microsoft](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)
-3. Run `python3.10 windows_installer.py` in the `install_script` folder
+3. **Run the installer script**
+   - **Download** the latest release from [GitHub](https://github.com/Viindoo/sign-client/releases)
+   - **Extract** the ZIP file to your desired location
+   - **Navigate** to the `install_script` folder
+   - **Run** `windows.bat`
+   - The script will check prerequisites and set up the application
 
 #### After Installation
 
